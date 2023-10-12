@@ -234,7 +234,7 @@ class Group extends Base {
   }
 }
 
-class Student extends Base {
+export class Student extends Base {
   // implement 'set grade' and 'set visit' methods
 
   private _firstName: string;
