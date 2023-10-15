@@ -41,33 +41,63 @@ abstract class Shape implements IShape {
 }
 
 class Circle extends Shape {
+  private readonly _radius: number;
+
+  public constructor(color: Color, name: string, radius: number) {
+    super(color, name);
+    this._radius = radius;
+  }
+
   public calculateArea(): number {
-    return 0;
+    return (Math.PI * this._radius * this._radius) / 4;
   }
 }
 
 class Triangle extends Shape {
-  public calculateArea(): number {
-    return 0;
-  }
-}
+  private readonly _base: number;
+  private readonly _height: number;
 
-class Rectangle extends Shape implements IPrintable {
-  public print(): string {
-    return `S = a * h / 2`;
+  public constructor(color: Color, name: string, base: number, height: number) {
+    super(color, name);
+    this._base = base;
+    this._height = height;
   }
 
   public calculateArea(): number {
-    return 0;
+    return (this._base * this._height) / 2;
   }
 }
 
 class Square extends Shape implements IPrintable {
+  protected readonly _base: number;
+
+  public constructor(color: Color, name: string, base: number) {
+    super(color, name);
+    this._base = base;
+  }
+
   public print(): string {
-    return `S = a * a`;
+    return `S = base * base`;
   }
 
   public calculateArea(): number {
-    return 0;
+    return this._base * this._base;
+  }
+}
+
+class Rectangle extends Square {
+  private readonly _height: number;
+
+  public constructor(color: Color, name: string, base: number, height: number) {
+    super(color, name, base);
+    this._height = height;
+  }
+
+  public print(): string {
+    return `S = base * height`;
+  }
+
+  public calculateArea(): number {
+    return super._base * this._height;
   }
 }

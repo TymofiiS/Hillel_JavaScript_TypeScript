@@ -24,28 +24,45 @@ class Shape {
     }
 }
 class Circle extends Shape {
+    constructor(color, name, radius) {
+        super(color, name);
+        this._radius = radius;
+    }
     calculateArea() {
-        return 0;
+        return (Math.PI * this._radius * this._radius) / 4;
     }
 }
 class Triangle extends Shape {
-    calculateArea() {
-        return 0;
-    }
-}
-class Rectangle extends Shape {
-    print() {
-        return `S = a * h / 2`;
+    constructor(color, name, base, height) {
+        super(color, name);
+        this._base = base;
+        this._height = height;
     }
     calculateArea() {
-        return 0;
+        return (this._base * this._height) / 2;
     }
 }
 class Square extends Shape {
+    constructor(color, name, base) {
+        super(color, name);
+        this._base = base;
+    }
     print() {
-        return `S = a * a`;
+        return `S = base * base`;
     }
     calculateArea() {
-        return 0;
+        return this._base * this._base;
+    }
+}
+class Rectangle extends Square {
+    constructor(color, name, base, height) {
+        super(color, name, base);
+        this._height = height;
+    }
+    print() {
+        return `S = base * height`;
+    }
+    calculateArea() {
+        return super._base * this._height;
     }
 }
