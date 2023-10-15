@@ -102,7 +102,7 @@ class Rectangle extends Square {
   }
 }
 
-const shapes: IShape[] | IPrintable[] = [
+const shapes: IShape[] = [
   new Circle(Color.green, "circle", 2),
   new Triangle(Color.yellow, "triangle", 2, 5),
   new Square(Color.red, "square", 2),
