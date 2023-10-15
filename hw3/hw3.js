@@ -63,6 +63,10 @@ class Rectangle extends Square {
         return `S = base * height`;
     }
     calculateArea() {
-        return super._base * this._height;
+        return this._base * this._height;
     }
 }
+const rec = new Rectangle(Color.green, "rec", 2, 5);
+console.log(rec.calculateArea(), rec.print());
+const sq = new Square(Color.red, "sq", 2);
+console.log(sq.calculateArea(), sq.print());
