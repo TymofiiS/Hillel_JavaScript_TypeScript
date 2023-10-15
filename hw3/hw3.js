@@ -66,7 +66,23 @@ class Rectangle extends Square {
         return this._base * this._height;
     }
 }
-const rec = new Rectangle(Color.green, "rec", 2, 5);
-console.log(rec.calculateArea(), rec.print());
-const sq = new Square(Color.red, "sq", 2);
-console.log(sq.calculateArea(), sq.print());
+const shapes = [
+    new Circle(Color.green, "circle", 2),
+    new Triangle(Color.yellow, "triangle", 2, 5),
+    new Square(Color.red, "square", 2),
+    new Rectangle(Color.green, "rectangle", 2, 5),
+];
+function isIPrintable(obj) {
+    return "print" in obj;
+}
+shapes.forEach((s) => {
+    let str = `
+    Name : ${s.name};
+    Area: ${s.calculateArea()}; 
+    Color index: ${s.color};`;
+    if (isIPrintable(s)) {
+        str += `
+    Formula: ${s.print()};`;
+    }
+    console.log(str);
+});
