@@ -21,6 +21,23 @@ interface IPrintable {
   print(): string;
 }
 
+interface ICircle extends IShape {
+  radius: number;
+}
+
+interface ITriangle extends IShape {
+  base: number;
+}
+
+interface ISquare extends IShape, IPrintable {
+  base: number;
+}
+
+interface IRectangle extends IShape, IPrintable {
+  base: number;
+  height: number;
+}
+
 abstract class Shape implements IShape {
   protected readonly _color: Color;
   public get color(): Color {
@@ -40,8 +57,11 @@ abstract class Shape implements IShape {
   public abstract calculateArea(): number;
 }
 
-class Circle extends Shape {
+class Circle extends Shape implements ICircle {
   private readonly _radius: number;
+  public get radius(): number {
+    return this._radius;
+  }
 
   public constructor(color: Color, name: string, radius: number) {
     super(color, name);
@@ -53,9 +73,15 @@ class Circle extends Shape {
   }
 }
 
-class Triangle extends Shape {
+class Triangle extends Shape implements ITriangle {
   private readonly _base: number;
+  public get base(): number {
+    return this._base;
+  }
   private readonly _height: number;
+  public get height(): number {
+    return this._height;
+  }
 
   public constructor(color: Color, name: string, base: number, height: number) {
     super(color, name);
@@ -68,8 +94,11 @@ class Triangle extends Shape {
   }
 }
 
-class Square extends Shape implements IPrintable {
+class Square extends Shape implements ISquare {
   protected readonly _base: number;
+  public get base(): number {
+    return this._base;
+  }
 
   public constructor(color: Color, name: string, base: number) {
     super(color, name);
@@ -85,8 +114,11 @@ class Square extends Shape implements IPrintable {
   }
 }
 
-class Rectangle extends Square {
+class Rectangle extends Square implements IRectangle {
   private readonly _height: number;
+  public get height(): number {
+    return this._height;
+  }
 
   public constructor(color: Color, name: string, base: number, height: number) {
     super(color, name, base);

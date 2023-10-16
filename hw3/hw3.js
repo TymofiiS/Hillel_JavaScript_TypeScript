@@ -24,6 +24,9 @@ class Shape {
     }
 }
 class Circle extends Shape {
+    get radius() {
+        return this._radius;
+    }
     constructor(color, name, radius) {
         super(color, name);
         this._radius = radius;
@@ -33,6 +36,12 @@ class Circle extends Shape {
     }
 }
 class Triangle extends Shape {
+    get base() {
+        return this._base;
+    }
+    get height() {
+        return this._height;
+    }
     constructor(color, name, base, height) {
         super(color, name);
         this._base = base;
@@ -43,6 +52,9 @@ class Triangle extends Shape {
     }
 }
 class Square extends Shape {
+    get base() {
+        return this._base;
+    }
     constructor(color, name, base) {
         super(color, name);
         this._base = base;
@@ -55,6 +67,9 @@ class Square extends Shape {
     }
 }
 class Rectangle extends Square {
+    get height() {
+        return this._height;
+    }
     constructor(color, name, base, height) {
         super(color, name, base);
         this._height = height;
