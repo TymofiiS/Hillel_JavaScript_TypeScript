@@ -56,7 +56,7 @@ type UpperCaseKeysIUser = UpperCaseKeys<IUser>;
 let x2: UpperCaseKeysIUser = {
   NAME: {
     firstName: "FirstName",
-    secondName: "SecondName",
+    secondName: undefined,
   },
   AGE: 10,
 };
@@ -65,10 +65,49 @@ let x2: UpperCaseKeysIUser = {
 Стоврити тип, що на основі єнаму генерує тип об'єкту, що як ключ має назву 
 ключа єнаму з додатковим префіксом 'get-' а як значення просто функцію
 */
+enum Keys {
+  Key1,
+  Key2,
+  Key3,
+}
+
+type TypeFromEnum = {
+  [K in keyof typeof Keys as `get-${K}`]: () => void;
+};
+
+const x3: TypeFromEnum = {
+  "get-Key1": () => {},
+  "get-Key2": () => {},
+  "get-Key3": () => {},
+};
 
 /*
 І саме цікаве. Створіть тип ObjectToPropertyDescriptor, 
 який перетворює звичайний обʼєкт на обʼєкт де кожне value є дескриптором.
+*/
+const DescriptorCustom = function (o: object, p: PropertyKey) {
+  return Object.getOwnPropertyDescriptor(o, p);
+};
+
+type ObjectToPropertyDescriptor<T extends object> = {
+  [K in keyof T]: (T: object, K) => PropertyDecorator;
+};
+
+interface IUserShort {
+  name: string;
+  age: number;
+}
+
+type ObjectToPropertyDescriptorShort = ObjectToPropertyDescriptor<IUserShort>;
+
+const x4: ObjectToPropertyDescriptorShort = {
+  name: DescriptorCustom(IUserShort, "name"),
+  age: DescriptorCustom(this, "age"),
+};
+
+console.log(x4);
+
+/*
 Створити тип, що буде повертати тип параметру функції 
 (Якщо в параметрі вказано массив number[] то вірним типом буде number)
 */
