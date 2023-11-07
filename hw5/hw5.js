@@ -35,19 +35,20 @@ const x3 = {
     "get-Key2": () => { },
     "get-Key3": () => { },
 };
-/*
-І саме цікаве. Створіть тип ObjectToPropertyDescriptor,
-який перетворює звичайний обʼєкт на обʼєкт де кожне value є дескриптором.
-*/
-const DescriptorCustom = function (o, p) {
-    return Object.getOwnPropertyDescriptor(o, p);
+const userShort = {
+    name: "Name",
+    age: 5,
 };
 const x4 = {
-    name: DescriptorCustom(this, "name"),
-    age: DescriptorCustom(this, "age"),
+    name: Object.getOwnPropertyDescriptor(userShort, "name"),
+    age: Object.getOwnPropertyDescriptor(userShort, "age"),
 };
 console.log(x4);
 /*
 Створити тип, що буде повертати тип параметру функції
 (Якщо в параметрі вказано массив number[] то вірним типом буде number)
 */
+function fArray(param) {
+    return 0;
+}
+let r1;

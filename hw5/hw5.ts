@@ -85,12 +85,8 @@ const x3: TypeFromEnum = {
 І саме цікаве. Створіть тип ObjectToPropertyDescriptor, 
 який перетворює звичайний обʼєкт на обʼєкт де кожне value є дескриптором.
 */
-const DescriptorCustom = function (o: object, p: PropertyKey) {
-  return Object.getOwnPropertyDescriptor(o, p);
-};
-
 type ObjectToPropertyDescriptor<T extends object> = {
-  [K in keyof T]: (T: object, K) => PropertyDecorator;
+  [K in keyof T]: PropertyDescriptor | undefined;
 };
 
 interface IUserShort {
@@ -98,11 +94,14 @@ interface IUserShort {
   age: number;
 }
 
-type ObjectToPropertyDescriptorShort = ObjectToPropertyDescriptor<IUserShort>;
+const userShort: IUserShort = {
+  name: "Name",
+  age: 5,
+};
 
-const x4: ObjectToPropertyDescriptorShort = {
-  name: DescriptorCustom(IUserShort, "name"),
-  age: DescriptorCustom(this, "age"),
+const x4: ObjectToPropertyDescriptor<IUserShort> = {
+  name: Object.getOwnPropertyDescriptor(userShort, "name"),
+  age: Object.getOwnPropertyDescriptor(userShort, "age"),
 };
 
 console.log(x4);
@@ -111,3 +110,24 @@ console.log(x4);
 Створити тип, що буде повертати тип параметру функції 
 (Якщо в параметрі вказано массив number[] то вірним типом буде number)
 */
+function fArrayStr(param: string[]): number {
+  return 0;
+}
+
+function fArrayUserShort(param: IUserShort[]): number {
+  return 0;
+}
+
+function fStr(param: string): number {
+  return 0;
+}
+
+type ParamTypeCustom<T> = T extends (param: (infer U)[]) => any
+  ? U
+  : T extends (param: infer U) => any
+  ? U
+  : undefined;
+
+let r1: ParamTypeCustom<typeof fArrayStr>;
+let r2: ParamTypeCustom<typeof fArrayUserShort>;
+let r3: ParamTypeCustom<typeof fStr>;
