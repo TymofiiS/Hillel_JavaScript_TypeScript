@@ -108,7 +108,7 @@ interface IFilteringList<T extends BaseFilm> {
   initialList: T[];
   filtersList: IFilter[];
 
-  filteredList: () => T[];
+  applyFiltersValue: () => T[];
   addFilter: (filter: IFilter) => number;
   removeFilterByIndex: (index: number) => void;
 }
@@ -120,7 +120,7 @@ class FilteringList<T extends BaseFilm> implements IFilteringList<T> {
   constructor(initialList: T[]) {
     this.initialList = initialList;
   }
-  filteredList = (): T[] => {
+  applyFiltersValue = (): T[] => {
     let result: T[] = [];
 
     for (let item of this.initialList) {
@@ -200,8 +200,8 @@ filteredFilms.addFilter(new FilterByOneProperty("awards", "award2"));
 //filteredFilms.addFilter(new FilterByOneProperty("name", "Name4"));
 filteredFilms.addFilter(new FilterByRange("yearRelease", 2021, 2023));
 filteredFilms.addFilter(new FilterByRange("rate", 4, 7));
-console.log(filteredFilms.filteredList());
+console.log(filteredFilms.applyFiltersValue());
 
 let filteredFilmCategories = new FilteringList<IFilmCategory>(filmCategories);
 filteredFilmCategories.addFilter(new FilterByOneProperty("name", "Category2"));
-console.log(filteredFilmCategories.filteredList());
+console.log(filteredFilmCategories.applyFiltersValue());
