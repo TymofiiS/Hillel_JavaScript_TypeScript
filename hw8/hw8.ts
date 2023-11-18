@@ -1,20 +1,21 @@
-/*
-Вам необхідно написати додаток Todo list. 
-У списку нотаток повинні бути методи для додавання нового запису, видалення, 
-редагування та отримання повної інформації про нотатку за ідентифікатором, 
-а так само отримання списку всіх нотаток. 
-Крім цього, у користувача має бути 
-можливість позначити нотаток, як виконаний, і отримання інформації про те, 
-скільки всього нотаток у списку і скільки залишилося невиконаними. 
+import { Note } from "./Note";
+import { Status } from "./Status";
+import { TodoListExtended } from "./TodoListExtended";
 
-Нотатки не повинні бути порожніми.
+let todoList = new TodoListExtended();
 
-Кожний нотаток має назву, зміст, дату створення і редагування та статус. 
-Нотатки бувають двох типів. 
-Дефолтні та такі, які вимагають підтвердження при ридагуванні.
+todoList.Add(new Note("name5", "description5"));
+todoList.Add(new Note("name1", "description1"));
+todoList.Add(new Note("name7", "description7"));
 
-Окремо необхідно розширити поведінку списку та додати можливість 
-пошуку нотатка за ім'ям або змістом.
-Також окремо необхідно розширити список можливістю сортування нотаток 
-за статусом або часом створення.
-*/
+console.log(JSON.stringify(todoList.All()));
+
+todoList.NoteByName("name1")?.Status(Status.Done);
+todoList.NoteDone(todoList.NoteByName("name5"));
+
+let note = todoList.NoteByDescription("description7") as Note;
+note.Description("updated description");
+todoList.Update(note);
+
+console.log(JSON.stringify(todoList.SortNotesByStatus()));
+console.log(JSON.stringify(todoList.ActiveNoteCount()));
