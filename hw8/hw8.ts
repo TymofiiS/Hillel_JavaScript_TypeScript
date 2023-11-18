@@ -14,7 +14,7 @@ todoList.NoteByName("name1")?.Status(Status.Done);
 todoList.NoteDone(todoList.NoteByName("name5"));
 
 let note = todoList.NoteByDescription("description7") as Note;
-note.Description("updated description");
+note?.Description("updated description");
 todoList.Update(note);
 
 console.log(JSON.stringify(todoList.SortNotesByStatus()));
