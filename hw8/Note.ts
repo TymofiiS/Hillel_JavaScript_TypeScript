@@ -3,44 +3,45 @@ import { NoteType } from "./NoteType";
 import { INote } from "./INote";
 
 export class Note implements INote {
-  Name(name?: string | undefined): string | void {
-    //get
-    if (!name) return this._name;
-    //set
+  protected static currentId = 1;
+
+  getName(): string {
+    return this._name;
+  }
+  setName(name: string): void {
     this._name = name;
     this._editAt = Date.now();
   }
-
-  Description(description?: string | undefined): string | void {
-    //get
-    if (!description) return this._description;
-    //set
+  setDescription(description: string): void {
     this._description = description;
     this._editAt = Date.now();
   }
-
-  Status(status?: Status | undefined): void | Status {
-    //get
-    if (!status) return this._status;
-    //set
+  getDescription(): string {
+    return this._description;
+  }
+  setStatus(status: Status): void {
     this._status = status;
     this._editAt = Date.now();
   }
+  getStatus(): Status {
+    return this._status;
+  }
+  protected _id: number;
+  getId(): number {
+    return this._id;
+  }
 
   protected _editAt: number;
-  EditAt(): number {
-    //get
+  getEditAt(): number {
     return this._editAt;
   }
 
-  NoteType(): NoteType {
-    //get
+  getNoteType(): NoteType {
     return this._noteType;
   }
 
   protected _createdAt: number;
-  CreateAt(): number {
-    //get
+  getCreateAt(): number {
     return this._createdAt;
   }
 
@@ -52,5 +53,24 @@ export class Note implements INote {
   ) {
     this._createdAt = Date.now();
     this._editAt = Date.now();
+    this._id = Note.currentId++;
+  }
+
+  protected setReadOnly(createdDate: number, editDate: number, id: number) {
+    this._createdAt = createdDate;
+    this._editAt = editDate;
+    this._id = id;
+  }
+
+  clone(): INote {
+    let result = new Note(
+      this._name,
+      this._description,
+      this._status,
+      this._noteType
+    );
+
+    result.setReadOnly(this._createdAt, this._editAt, this._id);
+    return result;
   }
 }

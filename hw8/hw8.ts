@@ -4,18 +4,23 @@ import { TodoListExtended } from "./TodoListExtended";
 
 let todoList = new TodoListExtended();
 
-todoList.Add(new Note("name5", "description5"));
-todoList.Add(new Note("name1", "description1"));
-todoList.Add(new Note("name7", "description7"));
+todoList.addNote(new Note("name5", "description5"));
+todoList.addNote(new Note("name1", "description1"));
+todoList.addNote(new Note("name7", "description7"));
 
-console.log(JSON.stringify(todoList.All()));
+console.log(JSON.stringify(todoList.getAllNotes()));
+const n = new Note("name9", "description9");
+console.log(JSON.stringify(n.clone()));
+//console.log(todoList.getNotes().filter((x) => x.getName() === "name5")[0]);
 
-todoList.NoteByName("name1")?.Status(Status.Done);
-todoList.NoteDone(todoList.NoteByName("name5"));
+/*
+todoList.getNoteByName("name1")?.setStatus(Status.Done);
+todoList.setNoteDone(todoList.getNoteByName("name5"));
 
-let note = todoList.NoteByDescription("description7") as Note;
-note?.Description("updated description");
-todoList.Update(note);
+let note = todoList.getNoteByDescription("description7") as Note;
+note?.setDescription("updated description");
+todoList.updateNote(note);
 
-console.log(JSON.stringify(todoList.SortNotesByStatus()));
-console.log(JSON.stringify(todoList.ActiveNoteCount()));
+console.log(JSON.stringify(todoList.notesSortedByStatus()));
+console.log(JSON.stringify(todoList.getActiveNoteCount()));
+*/

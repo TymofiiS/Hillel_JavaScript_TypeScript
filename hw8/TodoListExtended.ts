@@ -1,70 +1,96 @@
 import { INote } from "./INote";
 import { ITodoListExtended } from "./ITodoListExtended";
+import { NoteType } from "./NoteType";
 import { Status } from "./Status";
 
 export class TodoListExtended implements ITodoListExtended {
   protected _notes: INote[] = [];
 
-  NoteByName(name: string): INote | undefined {
-    return this._notes.filter((x) => x.Name() === name)[0];
+  cloneNotes(): INote[] {
+    let res: INote[] = [];
+    for (let i = 0; i < this._notes.length; i++) {
+      let note: INote = this._notes[i] as INote;
+      res.push(note.clone());
+    }
+    return res;
   }
-  NoteByDescription(description: string): INote | undefined {
-    return this._notes.filter((x) => x.Description() === description)[0];
+
+  getNoteByName(name: string): INote | undefined {
+    return this.cloneNotes().filter((x) => x.getName() === name)[0];
   }
-  SortNotesByStatus(): INote[] {
-    return this._notes.sort((n1, n2) => {
-      if (n1.Status() > n2.Status()) {
+  getNoteByDescription(description: string): INote | undefined {
+    return this.cloneNotes().filter(
+      (x) => x.getDescription() === description
+    )[0];
+  }
+  notesSortedByStatus(): INote[] {
+    return this.cloneNotes().sort((n1, n2) => {
+      if (n1.getStatus() > n2.getStatus()) {
         return 1;
       }
 
-      if (n1.Status() < n2.Status()) {
+      if (n1.getStatus() < n2.getStatus()) {
         return -1;
       }
 
       return 0;
     });
   }
-  SortNotesByCreateAt(): INote[] {
-    return this._notes.sort((n1, n2) => {
-      if (n1.CreateAt() > n2.CreateAt()) {
+  notesSortedByCreateAt(): INote[] {
+    return this.cloneNotes().sort((n1, n2) => {
+      if (n1.getCreateAt() > n2.getCreateAt()) {
         return 1;
       }
 
-      if (n1.CreateAt() < n2.CreateAt()) {
+      if (n1.getCreateAt() < n2.getCreateAt()) {
         return -1;
       }
 
       return 0;
     });
   }
-  Add(note: INote): number {
-    return this._notes.push(note);
+  addNote(note: INote): number {
+    return this._notes.push({ ...note });
   }
-  Delete(note: INote): void {
+  getNoteIndex(note: INote): number | undefined {
+    const realNode = this.getNoteById(note?.getId());
+    if (!realNode) return undefined;
+
     const index = this._notes.indexOf(note, 0);
-    if (index == -1) return;
+    if (index == -1) return undefined;
+
+    return index;
+  }
+  deleteNote(note: INote): void {
+    const index = this.getNoteIndex(note);
+    if (index === undefined) return;
 
     this._notes.splice(index, 1);
   }
-  Update(note: INote): void {
-    const index = this._notes.indexOf(note, 0);
-    if (index == -1) return;
+  updateNote(note: INote, editConfirmation: boolean = false): void {
+    const index = this.getNoteIndex(note);
+    if (index === undefined) return;
 
-    this._notes[index] = note;
+    if (note.getNoteType() === NoteType.EditConfirmation && !editConfirmation)
+      return;
+
+    this._notes[index] = note.clone();
   }
-  Get(index: number): INote {
-    return this._notes[index];
+  getNoteById(id: number): INote | undefined {
+    return this.cloneNotes().filter((x) => x.getId() === id)[0];
   }
-  All(): INote[] {
-    return this._notes;
+  getAllNotes(): INote[] {
+    return this.cloneNotes();
   }
-  NoteDone(note?: INote): void {
-    note?.Status(Status.Done);
+  setNoteDone(note?: INote): void {
+    if (!note) return;
+    note.setStatus(Status.Done);
+    this.updateNote(note);
   }
-  AllNoteCount(): number {
+  getAllNoteCount(): number {
     return this._notes.length;
   }
-  ActiveNoteCount(): number {
-    return this._notes.filter((x) => x.Status() === Status.Active).length;
+  getActiveNoteCount(): number {
+    return this._notes.filter((x) => x.getStatus() === Status.Active).length;
   }
 }

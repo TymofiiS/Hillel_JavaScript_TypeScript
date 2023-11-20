@@ -10,13 +10,14 @@
 import { INote } from "./INote";
 
 export interface ITodoList {
-  Add(note: INote): number;
-  Delete(note: INote): void;
-  Update(note: INote): void;
-  Get(index: number): INote;
-  All(): INote[];
+  addNote(note: INote): number;
+  deleteNote(note: INote): void;
+  updateNote(note: INote): void;
+  getNoteById(id: number): INote | undefined;
+  getAllNotes(): INote[];
 
-  NoteDone(note: INote): void;
-  AllNoteCount(): number;
-  ActiveNoteCount(): number;
+  setNoteDone(note: INote): void;
+  getAllNoteCount(): number;
+  getActiveNoteCount(): number;
+  getNoteIndex(note: INote): number | undefined;
 }

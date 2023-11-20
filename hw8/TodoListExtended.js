@@ -1,68 +1,91 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoListExtended = void 0;
+const NoteType_1 = require("./NoteType");
 const Status_1 = require("./Status");
 class TodoListExtended {
     constructor() {
         this._notes = [];
     }
-    NoteByName(name) {
-        return this._notes.filter((x) => x.Name() === name)[0];
+    cloneNotes() {
+        let res = [];
+        for (let i = 0; i < this._notes.length; i++) {
+            let note = this._notes[i];
+            res.push(note.clone());
+        }
+        return res;
     }
-    NoteByDescription(description) {
-        return this._notes.filter((x) => x.Description() === description)[0];
+    getNoteByName(name) {
+        return this.cloneNotes().filter((x) => x.getName() === name)[0];
     }
-    SortNotesByStatus() {
-        return this._notes.sort((n1, n2) => {
-            if (n1.Status() > n2.Status()) {
+    getNoteByDescription(description) {
+        return this.cloneNotes().filter((x) => x.getDescription() === description)[0];
+    }
+    notesSortedByStatus() {
+        return this.cloneNotes().sort((n1, n2) => {
+            if (n1.getStatus() > n2.getStatus()) {
                 return 1;
             }
-            if (n1.Status() < n2.Status()) {
+            if (n1.getStatus() < n2.getStatus()) {
                 return -1;
             }
             return 0;
         });
     }
-    SortNotesByCreateAt() {
-        return this._notes.sort((n1, n2) => {
-            if (n1.CreateAt() > n2.CreateAt()) {
+    notesSortedByCreateAt() {
+        return this.cloneNotes().sort((n1, n2) => {
+            if (n1.getCreateAt() > n2.getCreateAt()) {
                 return 1;
             }
-            if (n1.CreateAt() < n2.CreateAt()) {
+            if (n1.getCreateAt() < n2.getCreateAt()) {
                 return -1;
             }
             return 0;
         });
     }
-    Add(note) {
-        return this._notes.push(note);
+    addNote(note) {
+        return this._notes.push(Object.assign({}, note));
     }
-    Delete(note) {
+    getNoteIndex(note) {
+        const realNode = this.getNoteById(note === null || note === void 0 ? void 0 : note.getId());
+        if (!realNode)
+            return undefined;
         const index = this._notes.indexOf(note, 0);
         if (index == -1)
+            return undefined;
+        return index;
+    }
+    deleteNote(note) {
+        const index = this.getNoteIndex(note);
+        if (index === undefined)
             return;
         this._notes.splice(index, 1);
     }
-    Update(note) {
-        const index = this._notes.indexOf(note, 0);
-        if (index == -1)
+    updateNote(note, editConfirmation = false) {
+        const index = this.getNoteIndex(note);
+        if (index === undefined)
             return;
-        this._notes[index] = note;
+        if (note.getNoteType() === NoteType_1.NoteType.EditConfirmation && !editConfirmation)
+            return;
+        this._notes[index] = note.clone();
     }
-    Get(index) {
-        return this._notes[index];
+    getNoteById(id) {
+        return this.cloneNotes().filter((x) => x.getId() === id)[0];
     }
-    All() {
-        return this._notes;
+    getAllNotes() {
+        return this.cloneNotes();
     }
-    NoteDone(note) {
-        note === null || note === void 0 ? void 0 : note.Status(Status_1.Status.Done);
+    setNoteDone(note) {
+        if (!note)
+            return;
+        note.setStatus(Status_1.Status.Done);
+        this.updateNote(note);
     }
-    AllNoteCount() {
+    getAllNoteCount() {
         return this._notes.length;
     }
-    ActiveNoteCount() {
-        return this._notes.filter((x) => x.Status() === Status_1.Status.Active).length;
+    getActiveNoteCount() {
+        return this._notes.filter((x) => x.getStatus() === Status_1.Status.Active).length;
     }
 }
 exports.TodoListExtended = TodoListExtended;

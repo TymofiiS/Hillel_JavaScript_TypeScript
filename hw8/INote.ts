@@ -12,11 +12,16 @@ import { Status } from "./Status";
 import { NoteType } from "./NoteType";
 
 export interface INote {
-  Name(name?: string): string | void;
-  Description(description?: string): string | void;
-  Status(status?: Status): Status | void;
+  getName(): string;
+  setName(name: string): void;
+  setDescription(description: string): void;
+  getDescription(): string;
+  setStatus(status: Status): void;
+  getStatus(): Status;
 
-  EditAt(): number;
-  CreateAt(): number;
-  NoteType(): NoteType;
+  getEditAt(): number;
+  getCreateAt(): number;
+  getNoteType(): NoteType;
+  getId(): number;
+  clone(): INote;
 }

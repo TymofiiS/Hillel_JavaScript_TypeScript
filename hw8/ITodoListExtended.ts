@@ -8,8 +8,8 @@ import { INote } from "./INote";
 import { ITodoList } from "./ITodoList";
 
 export interface ITodoListExtended extends ITodoList {
-  NoteByName(name: string): INote | undefined;
-  NoteByDescription(description: string): INote | undefined;
-  SortNotesByStatus(): INote[];
-  SortNotesByCreateAt(): INote[];
+  getNoteByName(name: string): INote | undefined;
+  getNoteByDescription(description: string): INote | undefined;
+  notesSortedByStatus(): INote[];
+  notesSortedByCreateAt(): INote[];
 }
