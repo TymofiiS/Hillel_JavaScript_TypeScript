@@ -7,12 +7,7 @@ export class TodoListExtended implements ITodoListExtended {
   protected _notes: INote[] = [];
 
   cloneNotes(): INote[] {
-    let res: INote[] = [];
-    for (let i = 0; i < this._notes.length; i++) {
-      let note: INote = this._notes[i] as INote;
-      res.push(note.clone());
-    }
-    return res;
+    return this._notes.map((x) => x.clone());
   }
 
   getNoteByName(name: string): INote | undefined {
@@ -50,13 +45,15 @@ export class TodoListExtended implements ITodoListExtended {
     });
   }
   addNote(note: INote): number {
-    return this._notes.push({ ...note });
+    return this._notes.push(note.clone());
   }
   getNoteIndex(note: INote): number | undefined {
-    const realNode = this.getNoteById(note?.getId());
+    const realNode = this._notes.filter((x) => x.getId() === note.getId())[0];
+    console.log(`getNoteIndex, realNode id: ${realNode?.getId()}`);
     if (!realNode) return undefined;
 
-    const index = this._notes.indexOf(note, 0);
+    const index = this._notes.indexOf(realNode, 0);
+    console.log(`getNoteIndex, index: ${index}`);
     if (index == -1) return undefined;
 
     return index;
@@ -69,15 +66,20 @@ export class TodoListExtended implements ITodoListExtended {
   }
   updateNote(note: INote, editConfirmation: boolean = false): void {
     const index = this.getNoteIndex(note);
+    console.log(`\nupdatNote, index: ${index}, noteName: ${note.getName()}`);
     if (index === undefined) return;
 
-    if (note.getNoteType() === NoteType.EditConfirmation && !editConfirmation)
+    if (note.getNoteType() === NoteType.EditConfirmation && !editConfirmation) {
+      console.log(
+        `\nupdatNote, editConfirmation: ${editConfirmation}, noteName: ${note.getName()}`
+      );
       return;
+    }
 
     this._notes[index] = note.clone();
   }
   getNoteById(id: number): INote | undefined {
-    return this.cloneNotes().filter((x) => x.getId() === id)[0];
+    return this._notes.filter((x) => x.getId() === id)[0]?.clone();
   }
   getAllNotes(): INote[] {
     return this.cloneNotes();

@@ -8,12 +8,7 @@ class TodoListExtended {
         this._notes = [];
     }
     cloneNotes() {
-        let res = [];
-        for (let i = 0; i < this._notes.length; i++) {
-            let note = this._notes[i];
-            res.push(note.clone());
-        }
-        return res;
+        return this._notes.map((x) => x.clone());
     }
     getNoteByName(name) {
         return this.cloneNotes().filter((x) => x.getName() === name)[0];
@@ -44,13 +39,15 @@ class TodoListExtended {
         });
     }
     addNote(note) {
-        return this._notes.push(Object.assign({}, note));
+        return this._notes.push(note.clone());
     }
     getNoteIndex(note) {
-        const realNode = this.getNoteById(note === null || note === void 0 ? void 0 : note.getId());
+        const realNode = this._notes.filter((x) => x.getId() === note.getId())[0];
+        console.log(`getNoteIndex, realNode id: ${realNode === null || realNode === void 0 ? void 0 : realNode.getId()}`);
         if (!realNode)
             return undefined;
-        const index = this._notes.indexOf(note, 0);
+        const index = this._notes.indexOf(realNode, 0);
+        console.log(`getNoteIndex, index: ${index}`);
         if (index == -1)
             return undefined;
         return index;
@@ -63,14 +60,18 @@ class TodoListExtended {
     }
     updateNote(note, editConfirmation = false) {
         const index = this.getNoteIndex(note);
+        console.log(`\nupdatNote, index: ${index}, noteName: ${note.getName()}`);
         if (index === undefined)
             return;
-        if (note.getNoteType() === NoteType_1.NoteType.EditConfirmation && !editConfirmation)
+        if (note.getNoteType() === NoteType_1.NoteType.EditConfirmation && !editConfirmation) {
+            console.log(`\nupdatNote, editConfirmation: ${editConfirmation}, noteName: ${note.getName()}`);
             return;
+        }
         this._notes[index] = note.clone();
     }
     getNoteById(id) {
-        return this.cloneNotes().filter((x) => x.getId() === id)[0];
+        var _a;
+        return (_a = this._notes.filter((x) => x.getId() === id)[0]) === null || _a === void 0 ? void 0 : _a.clone();
     }
     getAllNotes() {
         return this.cloneNotes();

@@ -46,14 +46,15 @@ class Note {
         this._editAt = Date.now();
         this._id = Note.currentId++;
     }
-    setReadOnly(createdDate, editDate, id) {
+    setReadOnly(createdDate, editDate, id, noteType) {
         this._createdAt = createdDate;
         this._editAt = editDate;
         this._id = id;
+        this._noteType = noteType;
     }
     clone() {
         let result = new Note(this._name, this._description, this._status, this._noteType);
-        result.setReadOnly(this._createdAt, this._editAt, this._id);
+        result.setReadOnly(this._createdAt, this._editAt, this._id, this._noteType);
         return result;
     }
 }

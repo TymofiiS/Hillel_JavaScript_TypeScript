@@ -56,10 +56,16 @@ export class Note implements INote {
     this._id = Note.currentId++;
   }
 
-  protected setReadOnly(createdDate: number, editDate: number, id: number) {
+  protected setReadOnly(
+    createdDate: number,
+    editDate: number,
+    id: number,
+    noteType: NoteType
+  ) {
     this._createdAt = createdDate;
     this._editAt = editDate;
     this._id = id;
+    this._noteType = noteType;
   }
 
   clone(): INote {
@@ -70,7 +76,7 @@ export class Note implements INote {
       this._noteType
     );
 
-    result.setReadOnly(this._createdAt, this._editAt, this._id);
+    result.setReadOnly(this._createdAt, this._editAt, this._id, this._noteType);
     return result;
   }
 }

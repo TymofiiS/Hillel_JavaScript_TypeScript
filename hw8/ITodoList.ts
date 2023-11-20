@@ -12,7 +12,7 @@ import { INote } from "./INote";
 export interface ITodoList {
   addNote(note: INote): number;
   deleteNote(note: INote): void;
-  updateNote(note: INote): void;
+  updateNote(note: INote, editConfirmation: boolean): void;
   getNoteById(id: number): INote | undefined;
   getAllNotes(): INote[];
 

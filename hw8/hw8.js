@@ -1,23 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Note_1 = require("./Note");
+const NoteType_1 = require("./NoteType");
+const Status_1 = require("./Status");
 const TodoListExtended_1 = require("./TodoListExtended");
 let todoList = new TodoListExtended_1.TodoListExtended();
 todoList.addNote(new Note_1.Note("name5", "description5"));
 todoList.addNote(new Note_1.Note("name1", "description1"));
-todoList.addNote(new Note_1.Note("name7", "description7"));
-console.log(JSON.stringify(todoList.getAllNotes()));
-const n = new Note_1.Note("name9", "description9");
-console.log(JSON.stringify(n.clone()));
-//console.log(todoList.getNotes().filter((x) => x.getName() === "name5")[0]);
-/*
-todoList.getNoteByName("name1")?.setStatus(Status.Done);
+todoList.addNote(new Note_1.Note("name7", "description7", Status_1.Status.Active, NoteType_1.NoteType.EditConfirmation));
+console.log("\nInitial:");
+todoList.getAllNotes().forEach((x) => console.log(x));
+let tempNote = todoList.getNoteByName("name1");
+tempNote === null || tempNote === void 0 ? void 0 : tempNote.setStatus(Status_1.Status.Done);
+todoList.updateNote(tempNote, false);
+console.log("\nSet Status Done for name1:", todoList.getNoteByName("name1"));
 todoList.setNoteDone(todoList.getNoteByName("name5"));
-
-let note = todoList.getNoteByDescription("description7") as Note;
-note?.setDescription("updated description");
-todoList.updateNote(note);
-
-console.log(JSON.stringify(todoList.notesSortedByStatus()));
-console.log(JSON.stringify(todoList.getActiveNoteCount()));
-*/
+console.log("\nSet Status Done for name5:", todoList.getNoteByName("name5"));
+let note = todoList.getNoteByDescription("description7");
+note === null || note === void 0 ? void 0 : note.setDescription("updated description");
+todoList.updateNote(note, true);
+console.log("\nUpdate description for description7:", todoList.getNoteByName("name7"));
+note === null || note === void 0 ? void 0 : note.setDescription("updated description againe");
+todoList.updateNote(note, false);
+console.log("\nUpdate description for description7:", todoList.getNoteByName("name7"));
+console.log("\nSorted by Status");
+todoList.notesSortedByStatus().forEach((x) => console.log(x));
+console.log("\nActive notes count: ", todoList.getActiveNoteCount());
